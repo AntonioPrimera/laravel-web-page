@@ -2,72 +2,50 @@
 
 namespace AntonioPrimera\WebPage\Managers\Traits;
 
+use AntonioPrimera\WebPage\Facades\BitDictionary;
 use AntonioPrimera\WebPage\Models\Bit;
-use AntonioPrimera\WebPage\Models\Component;
-use Illuminate\Support\Str;
+use AntonioPrimera\WebPage\Models\WebComponent;
 
 trait HandlesBitInstances
 {
 	use ManagerHelpers;
 	
-	protected array $bits = [];
-	
-	protected function cacheBit(?Bit $bit)
-	{
-		if (!$bit)
-			return null;
-		
-		$this->bits[$bit->uid] = $bit;
-		return $bit;
-	}
-	
 	//--- Bit creation ------------------------------------------------------------------------------------------------
 	
-	protected function createBit(string $description): ?Bit
+	public function createBit(string $description, bool $onlyDefined = false): ?Bit
 	{
-		if (!$this->owner instanceof Component)
+		if (!$this->owner instanceof WebComponent)
 			return null;
 		
 		//decompose the item description
-		[$type, $name, $uid] = $this->itemDescription($description);
-		
-		$validUid = $uid ?: Str::kebab($name);
+		['type' => $type, 'name' => $name, 'uid' => $uid] = $this->decomposeItemDescription($description);
 		
 		//check if we don't already have the bit
-		if ($existingBit = $this->getBit($validUid))
+		if ($existingBit = $this->getBit($uid))
 			return $existingBit;
 		
-		//only create the bit if the given type is defined
-		return $this->bitTypeIsDefined($type)
-			? $this->createNewBit($type, $name, $validUid)
-			: null;
-	}
-	
-	protected function createNewBit(string $type, string $name, string $uid)
-	{
-		/** @noinspection PhpParamsInspection */
-		return $this->cacheBit(
-			$this->owner->bits()->create(compact('type', 'name', 'uid'))
-		);
+		//if only pre-defined bits should be created and this type is not defined, exit
+		if ($onlyDefined && !BitDictionary::isDefined($type))
+			return null;
+		
+		$bit = $this->owner->bits()->create(compact('type', 'name', 'uid'));
+		
+		//reset any loaded bits
+		$this->resetBits();
+		
+		/* @var Bit $bit */
+		return $bit;
 	}
 	
 	//--- Bit retrieval -----------------------------------------------------------------------------------------------
 	
-	public function getBit(string $uid)
+	public function getBit(string $uid): ?Bit
 	{
-		return $this->getCachedBit($uid) ?: $this->getBitFromOwnerComponent($uid);
+		return $this->owner->bits->firstWhere('uid', $uid);
 	}
 	
-	protected function getCachedBit(string $uid)
+	public function resetBits()
 	{
-		return $this->bits[$uid] ?? null;
-	}
-	
-	protected function getBitFromOwnerComponent(string $uid)
-	{
-		if (!$this->owner instanceof Component)
-			return null;
-		
-		return $this->cacheBit($this->owner->bits()->whereUid($uid)->first());
+		$this->owner->unsetRelation('bits');
 	}
 }

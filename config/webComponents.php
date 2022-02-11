@@ -1,86 +1,72 @@
 <?php
 
 return [
-	'defaultBit' => 'ShortText',
-	
 	'components' => [
-		'Page' => [
-		
+		'definitions' => [
+			'Page' => [],
+			
+			'Section' => [],
+			
+			'Link' => [
+				'bits' => [
+					'Label', 'Url'
+				],
+			],
+			
+			'MediaGallery' => [],
+			
+			'Image' => [
+				'bits' => [
+					'Source', 'Label'
+				],
+			],
+			
+			'Button' => [
+				'bits' => [
+					'ShortText:Label'
+				],
+			],
 		],
 		
-		'Section' => [
+		'aliases' => [
 		
-		],
-		
-		'Link' => [
-			'bits' => [
-				'Label', 'Url'
-			]
-		],
-		
-		'Image' => [
-			'bits' => [
-				'Source', 'Label'
-			]
 		],
 	],
 	
 	'bits' => [
-		'ShortText' => [
-			'editor'   => 'input#text',				//default editor, so it can be omitted
-			'rules'    => ['string', 'max:255'],
+		'definitions' => [
+			'ShortText' => [
+				'editor'   => 'input#text',
+				'rules'    => ['string', 'max:255'],
+			],
+			
+			'LongText' => [
+				'editor' => 'textarea',
+				'rules'  => ['string'],
+			],
+			
+			'File' => [
+				'editor' => 'input:file',				//todo: change the editor into a livewire component
+			],
+			
+			'Source' => [
+				'editor' => 'input:file',
+				'rules' => ['image'],
+			],
 		],
 		
-		'LongText' => [
-			'editor' => 'textarea',
-			'rules'  => ['string'],					//default rule, so it can be omitted
+		'aliases' => [
+			//short text aliases
+			'Label' => 'ShortText',
+			'Title' => 'ShortText',
+			'Url'   => 'ShortText',
+			
+			//long text aliases
+			'Text'  => 'LongText',
+			'Description' => 'LongText',
+			
+			//file aliases
+			'Src' => 'Source',
 		],
-		
-		//short text aliases
-		'Label' => 'alias:ShortText',
-		'Title' => 'alias:ShortText|required',
-		'Url'   => 'alias:ShortText|rules:url',
-		
-		//long text aliases
-		'Text'  => 'alias:LongText',
-		'Description' => 'alias:LongText',
-		
-		//used for file uploads by the admin
-		'File' => [
-			'editor' => 'input#file',
-		],
-		
-		//the src attribute for files
-		'Source' => 'alias:File|rules:image',
-		
-		//'Link' => [
-		//	'label' => [
-		//		'rules' => ['nullable', 'string'],
-		//	],
-		//
-		//	'url' => [
-		//		'editor' => 'input:url',
-		//		'rules'  => ['required', 'url'],
-		//	],
-		//
-		//	'target' => [
-		//		'editor'  => 'select',
-		//		'options' => [
-		//			'_self','_blank','_parent','_top'
-		//		],
-		//		'rules'   => ['nullable', 'string', 'in:_self,_blank,_parent,_top'],
-		//		'default' => '_self',
-		//	],
-		//],
-		
-		//'Image' => [
-		//	'url' => [
-		//		'editor' => 'input:file',
-		//		'rules'  => ['required', 'image'],
-		//	],
-		//	'label' => [
-		//		'rules' => ['nullable', 'string'],
-		//	],
-		//],
 	],
 ];

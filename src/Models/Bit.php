@@ -2,55 +2,56 @@
 
 namespace AntonioPrimera\WebPage\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use AntonioPrimera\WebPage\Definitions\BitDefinition;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 
 /**
  * @property BitDefinition $definition
- * @property string $type
- * @property string $name
- * @property string $uid
- * @property array $data
- * @property int $component_id
+ * @property string        $type
+ * @property string        $name
+ * @property string        $uid
+ * @property array         $data
+ * @property int           $component_id
  *
- * @property Component $component
+ * @property WebComponent  $component
  */
-class Bit extends Model
+class Bit extends WebItem
 {
+	use SoftDeletes;
+	
+	const IS_LEAF = true;
+	
 	protected $guarded = [];
 	protected $table = 'lwp_bits';
 	
 	//definition buffer
-	protected $definition = [];
-	
-	//public function __construct(string $type, string $name, ?string $uid = null)
-	//{
-	//	parent::__construct([
-	//		'type' => $type,
-	//		'name' => $name,
-	//		'uid'  => $uid ?: Str::slug($name),
-	//	]);
-	//}
-	
-	//--- Relations ---------------------------------------------------------------------------------------------------
-	
-	public function component()
-	{
-		return $this->belongsTo(Component::class, 'component_id', 'id');
-	}
+	protected array | null $definition = null;
 	
 	//--- Bit Definition ----------------------------------------------------------------------------------------------
 	
 	public function getDefinitionAttribute()
 	{
 		//check the buffer - this lazy loads the definition (buffered for the type)
-		if (!isset($this->definition[$this->type]))
-			$this->definition[$this->type] = BitDefinition::createFromType($this->type);
+		if (!$this->definition)
+			$this->definition = bitDefinition($this->type);
 		
-		return $this->definition[$this->type];
+		return $this->definition;
 	}
 	
-	//--- Attribute management ----------------------------------------------------------------------------------------
+	//--- Getters and mutators ----------------------------------------------------------------------------------------
+	
+	public function getValueAttribute()
+	{
+		return $this->getBitData($this->language);
+	}
+	
+	public function setValueAttribute($value)
+	{
+		return $this->setBitData($this->language, $value);
+	}
+	
+	//--- Bit data management -----------------------------------------------------------------------------------------
 	
 	public function setBitData(string $language, mixed $value): static
 	{

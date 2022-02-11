@@ -21,7 +21,9 @@ class CreateBitsTable extends Migration
             $table->string('uid');
             $table->json('data')->nullable()->comment('The actual data container.');
             
-            $table->foreignId('component_id')->constrained('lwp_components');
+            $table->foreignId('parent_id')->constrained('lwp_components');
+            
+            $table->softDeletes();
             
             $table->timestamps();
         });

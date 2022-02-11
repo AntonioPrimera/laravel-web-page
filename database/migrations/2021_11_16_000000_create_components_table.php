@@ -16,14 +16,13 @@ class CreateComponentsTable extends Migration
         Schema::create('lwp_components', function (Blueprint $table) {
             $table->id();
 	
+			$table->foreignId('parent_id')->nullable()->constrained('lwp_components');
+			
 			$table->string('type');
             $table->string('name');
             $table->string('uid');
             
-			$table->json('definition')->nullable()->comment('The definitions of the data attributes for bit components');
-			$table->json('data')->nullable()->comment('The actual data container for bit components.');
-			
-			$table->foreignId('parent_id')->nullable()->constrained('lwp_components');
+			$table->softDeletes();
             
             $table->timestamps();
         });
