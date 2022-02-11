@@ -22,7 +22,6 @@ class RunRecipeCommand extends Command
 		try {
 			$recipeClass = 'App\\WebPage\\Recipes\\' . $this->argument('name');
 			$recipe = $this->createRecipeInstance($recipeClass);
-			$this->loadComponentsFromRecipe($recipe);
 			$this->runRecipe($recipe);
 			
 			$message = "Recipe $recipeClass "
@@ -58,17 +57,8 @@ class RunRecipeCommand extends Command
 		return new $recipeClass;
 	}
 	
-	protected function loadComponentsFromRecipe(Recipe $recipe)
-	{
-		ComponentDictionary::loadDefinitions($recipe->defineComponents());
-		ComponentDictionary::loadAliases($recipe->defineComponentAliases());
-		
-		BitDictionary::loadAliases($recipe->defineBitAliases());
-	}
-	
 	protected function runRecipe(Recipe $recipe)
 	{
-		$method = $this->option('down') ? 'down' : 'up';
-		$recipe->$method(webPage()->componentManager());
+		call_user_func([$recipe, $this->option('down') ? 'down' : 'up']);
 	}
 }

@@ -13,13 +13,6 @@ class DUMMY_CLASS extends Recipe
 {
 
 	/**
-	 * Override the $recipe attribute or the recipe()
-	 * method to return a recipe array of
-	 * components to be created
-	 */
-	protected array $recipe = [];
-
-	/**
 	 * Override the recipe method and return the component recipe to be created
 	 * by the WebPage ComponentManager. The recipe should contain a list of
 	 * 'components' and can define components and bits recursively
@@ -40,44 +33,4 @@ class DUMMY_CLASS extends Recipe
 			//],
 		];
 	}
-
-	/**
-	 * Override this method if you want to take full control
-	 * over the creation of components and bits
-	 */
-	public function up(ComponentManager $manager)
-	{
-		parent::up($manager);
-	}
-
-	/**
-	 * Override this method if you want to take full control
-	 * over the deletion of components and bits
-	 */
-	public function down(ComponentManager $manager)
-	{
-		parent::down($manager);
-	}
-	
-	public function defineComponents(): array
-	{
-		return [
-			//define your components: 'componentType' => ['components' => [...], 'bits' => [...]]
-		];
-	}
-
-	public function defineComponentAliases(): array
-	{
-		return [
-			//define your component aliases: 'componentType' => 'aliasedComponentType'
-		];
-	}
-	
-	public function defineBitAliases(): array
-	{
-		return [
-			//define your bit aliases: 'bitType' => 'aliasedBitType'
-		];
-	}
-	
 }

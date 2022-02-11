@@ -2,16 +2,22 @@
 
 namespace AntonioPrimera\WebPage\Migrations;
 
+use AntonioPrimera\WebPage\Facades\BitDictionary;
+use AntonioPrimera\WebPage\Facades\ComponentDictionary;
 use AntonioPrimera\WebPage\Managers\ComponentManager;
 
 class Recipe
 {
-	/**
-	 * Override the $recipe attribute or the recipe()
-	 * method to return a recipe array of
-	 * components to be created
-	 */
-	protected array $recipe = [];
+	
+	public function __construct()
+	{
+		ComponentDictionary::loadDefinitions($this->defineComponents());
+		ComponentDictionary::loadAliases($this->defineComponentAliases());
+		
+		BitDictionary::loadAliases($this->defineBitAliases());
+	}
+	
+	//--- Hooks - to be overridden if necessary -----------------------------------------------------------------------
 	
 	/**
 	 * Override the recipe method and return the component recipe to be created
@@ -33,24 +39,6 @@ class Recipe
 		];
 	}
 	
-	/**
-	 * Override this method if you want to take full control
-	 * over the creation of components and bits
-	 */
-	public function up(ComponentManager $manager)
-	{
-		$this->cookRecipe($this->recipe() ?: $this->recipe, $manager);
-	}
-	
-	/**
-	 * Override this method if you want to take full control
-	 * over the deletion of components and bits
-	 */
-	public function down(ComponentManager $manager)
-	{
-		$this->trashRecipe($this->recipe() ?: $this->recipe, $manager);
-	}
-	
 	public function defineComponents(): array
 	{
 		return [
@@ -70,6 +58,26 @@ class Recipe
 		return [
 			//define your bit aliases: 'bitType' => 'aliasedBitType'
 		];
+	}
+	
+	//--- Recipe management -------------------------------------------------------------------------------------------
+	
+	/**
+	 * Override this method if you want to take full control
+	 * over the creation of components and bits
+	 */
+	public function up()
+	{
+		$this->cookRecipe($this->recipe(), webPage()->componentManager());
+	}
+	
+	/**
+	 * Override this method if you want to take full control
+	 * over the deletion of components and bits
+	 */
+	public function down()
+	{
+		$this->trashRecipe($this->recipe(), webPage()->componentManager());
 	}
 	
 	//--- Protected helpers -------------------------------------------------------------------------------------------
