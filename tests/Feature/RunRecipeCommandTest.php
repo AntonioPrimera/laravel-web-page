@@ -5,7 +5,7 @@ namespace AntonioPrimera\WebPage\Tests\Feature;
 use AntonioPrimera\Testing\CustomAssertions;
 use AntonioPrimera\WebPage\Facades\BitDictionary;
 use AntonioPrimera\WebPage\Facades\WebPage;
-use AntonioPrimera\WebPage\Migrations\Recipe;
+use AntonioPrimera\WebPage\Recipes\Recipe;
 use AntonioPrimera\WebPage\Models\Bit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use AntonioPrimera\WebPage\Tests\TestCase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AntonioPrimera\WebPage\Migrations;
+namespace AntonioPrimera\WebPage\Recipes;
 
 use AntonioPrimera\WebPage\Facades\BitDictionary;
 use AntonioPrimera\WebPage\Facades\ComponentDictionary;

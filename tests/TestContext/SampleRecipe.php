@@ -3,33 +3,31 @@
 /** @noinspection PhpIllegalPsrClassPathInspection */
 namespace App\WebPage\Recipes;
 
-use AntonioPrimera\WebPage\Managers\ComponentManager;
-use AntonioPrimera\WebPage\Migrations\Recipe;
+use AntonioPrimera\WebPage\Recipes\Recipe;
 
 class SampleRecipe extends Recipe
 {
-	protected array $recipe = [
-		'Pagina:HomePage' => [
-			'components' => [
-				'Sectiune:Header' => [
-					'components' => [
-						'Titlu', 'Imagine:Logo', 'Imagine:Hero'
-					],
-				],
-				'Cta:Hai La Noi',
-				'Cta:Inscrie-te'
-			],
-			
-			'bits' => [
-				'Titlu:Titlu Pagina'
-			],
-		],
-	];
 	
-	//public function up(ComponentManager $manager)
-	//{
-	//	parent::up($manager);
-	//}
+	public function recipe(): array
+	{
+		return [
+			'Pagina:HomePage' => [
+				'components' => [
+					'Sectiune:Header' => [
+						'components' => [
+							'Titlu', 'Imagine:Logo', 'Imagine:Hero'
+						],
+					],
+					'Cta:Hai La Noi',
+					'Cta:Inscrie-te'
+				],
+				
+				'bits' => [
+					'Titlu:Titlu Pagina'
+				],
+			],
+		];
+	}
 	
 	public function defineComponents(): array
 	{

@@ -17,6 +17,34 @@ Components are Eloquent Models,
 ### Bits
 
 
+### Creating a recipe (via Artisan)
+
+To create a new recipe file, you can use the following artisan command:
+
+`php artisan web-page:make:recipe RecipeName`
+
+This will generate a simple recipe file, something like a database migration, where you can define
+the list of components and bits to be created at root level and their component and bit structures.
+
+If you want to create a complex recipe, defining the components, aliases and bit aliases, you can
+add the flag `--complex` to the above artisan command.
+
+### Creating / deleting components using a recipe file
+
+Once you have created a recipe file, with the necessary components and bits for your web page,
+you can use another artisan command to actually create the Web Components defined in the file as
+Eloquent Models in the database:
+
+`php artisan web-page:recipe RecipeName`
+
+This will use the recipe file `RecipeName` and run its `up()` method to create the structure you returned
+from the `recipe()` method.
+
+If you want to undo the creation of components from a recipe file, you can use the `--down` flag
+on the above command, which will look for all created Web Components and Bits and remove them
+(something like the 'migrate:rollback' command). This basically just runs the `down()` method of the
+recipe, which, if not overridden, will blindly try to remove all Eloquent Models created by the `up()`
+method recursively.
 
 ### ComponentManager
 

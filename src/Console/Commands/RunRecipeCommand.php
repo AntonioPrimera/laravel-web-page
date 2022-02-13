@@ -3,9 +3,7 @@
 namespace AntonioPrimera\WebPage\Console\Commands;
 
 use AntonioPrimera\WebPage\Exceptions\RecipeException;
-use AntonioPrimera\WebPage\Facades\BitDictionary;
-use AntonioPrimera\WebPage\Facades\ComponentDictionary;
-use AntonioPrimera\WebPage\Migrations\Recipe;
+use AntonioPrimera\WebPage\Recipes\Recipe;
 use Illuminate\Console\Command;
 
 class RunRecipeCommand extends Command
