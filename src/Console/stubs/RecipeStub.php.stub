@@ -2,9 +2,7 @@
 
 namespace DUMMY_NAMESPACE;
 
-use AntonioPrimera\WebPage\Managers\ComponentManager;
 use AntonioPrimera\WebPage\Recipes\Recipe;
-
 use AntonioPrimera\WebPage\Facades\WebPage;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use AntonioPrimera\WebPage\Models\Bit;

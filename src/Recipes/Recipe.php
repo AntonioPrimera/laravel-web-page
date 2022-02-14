@@ -92,7 +92,10 @@ class Recipe
 		$components = $recipe['components'] ?? $recipe;
 		
 		foreach ($components as $description => $componentRecipe) {
-			$manager->createComponent($description, $componentRecipe);
+			$manager->createComponent(
+				is_numeric($description) ? $componentRecipe : $description,
+				is_numeric($description) ? [] : $componentRecipe
+			);
 		}
 	}
 	
@@ -106,7 +109,8 @@ class Recipe
 		$components = $recipe['components'] ?? $recipe;
 		
 		foreach ($components as $description => $componentRecipe) {
-			$uid = $manager->decomposeItemDescription($description)['uid'];
+			$componentDescription = is_numeric($description) ? $componentRecipe : $description;
+			$uid = $manager->decomposeItemDescription($componentDescription)['uid'];
 			$manager->delete($uid);
 		}
 	}

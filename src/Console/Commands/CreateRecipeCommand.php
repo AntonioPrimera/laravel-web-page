@@ -13,7 +13,7 @@ class CreateRecipeCommand extends FileGeneratorCommand
 	
 	protected function recipe(): array
 	{
-		$stubFile = $this->hasOption('complex')
+		$stubFile = $this->option('complex')
 			? __DIR__ . '/../stubs/ComplexRecipeStub.php.stub'
 			: __DIR__ . '/../stubs/RecipeStub.php.stub';
 		

@@ -2,22 +2,13 @@
 
 namespace DUMMY_NAMESPACE;
 
-use AntonioPrimera\WebPage\Managers\ComponentManager;
 use AntonioPrimera\WebPage\Recipes\Recipe;
-
 use AntonioPrimera\WebPage\Facades\WebPage;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use AntonioPrimera\WebPage\Models\Bit;
 
 class DUMMY_CLASS extends Recipe
 {
-
-	/**
-	 * Override the $recipe attribute or the recipe()
-	 * method to return a recipe array of
-	 * components to be created
-	 */
-	protected array $recipe = [];
 
 	/**
 	 * Override the recipe method and return the component recipe to be created
@@ -45,18 +36,18 @@ class DUMMY_CLASS extends Recipe
 	 * Override this method if you want to take full control
 	 * over the creation of components and bits
 	 */
-	public function up(ComponentManager $manager)
+	public function up()
 	{
-		parent::up($manager);
+		parent::up();
 	}
 
 	/**
 	 * Override this method if you want to take full control
 	 * over the deletion of components and bits
 	 */
-	public function down(ComponentManager $manager)
+	public function down()
 	{
-		parent::down($manager);
+		parent::down();
 	}
 	
 	public function defineComponents(): array
