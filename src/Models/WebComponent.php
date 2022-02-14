@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property int $id
@@ -30,9 +32,9 @@ use Illuminate\Support\Str;
  *
  * @todo - add component manager methods here (see __call())
  */
-class WebComponent extends WebItem
+class WebComponent extends WebItem implements HasMedia
 {
-	use SoftDeletes;
+	use SoftDeletes, InteractsWithMedia;
 	
 	protected $guarded = [];
 	protected $table = 'lwp_components';
