@@ -2,19 +2,22 @@
 
 namespace AntonioPrimera\WebPage\Recipes;
 
-use AntonioPrimera\WebPage\Facades\BitDictionary;
-use AntonioPrimera\WebPage\Facades\ComponentDictionary;
-use AntonioPrimera\WebPage\Managers\ComponentManager;
+use AntonioPrimera\WebPage\Models\WebComponent;
+use AntonioPrimera\WebPage\WebPage;
 
 class Recipe
 {
+	protected array $componentDefinitions;
+	protected array $bitDefinitions;
+	protected array $webComponentsConfig;
+	protected array $webBitsConfig;
 	
 	public function __construct()
 	{
-		ComponentDictionary::loadDefinitions($this->defineComponents());
-		ComponentDictionary::loadAliases($this->defineComponentAliases());
-		
-		BitDictionary::loadAliases($this->defineBitAliases());
+		$this->webComponentsConfig = config('webComponents', []);
+		$this->webBitsConfig = config('webBits', []);
+		$this->componentDefinitions = array_merge($this->defineComponents(), config('webComponents', []));
+		$this->bitDefinitions = array_merge($this->defineBits(), config('webBits', []));
 	}
 	
 	//--- Hooks - to be overridden if necessary -----------------------------------------------------------------------
@@ -39,27 +42,6 @@ class Recipe
 		];
 	}
 	
-	public function defineComponents(): array
-	{
-		return [
-			//define your components: 'componentType' => ['components' => [...], 'bits' => [...]]
-		];
-	}
-	
-	public function defineComponentAliases(): array
-	{
-		return [
-			//define your component aliases: 'componentType' => 'aliasedComponentType'
-		];
-	}
-	
-	public function defineBitAliases(): array
-	{
-		return [
-			//define your bit aliases: 'bitType' => 'aliasedBitType'
-		];
-	}
-	
 	//--- Recipe management -------------------------------------------------------------------------------------------
 	
 	/**
@@ -68,7 +50,7 @@ class Recipe
 	 */
 	public function up()
 	{
-		$this->cookRecipe($this->recipe(), webPage()->componentManager());
+		$this->cookRecipe($this->recipe(), webPage());
 	}
 	
 	/**
@@ -77,7 +59,7 @@ class Recipe
 	 */
 	public function down()
 	{
-		$this->trashRecipe($this->recipe(), webPage()->componentManager());
+		$this->trashRecipe($this->recipe(), webPage());
 	}
 	
 	//--- Protected helpers -------------------------------------------------------------------------------------------
@@ -86,16 +68,22 @@ class Recipe
 	 * A basic recipe cooker. Takes a recipe (a list of components)
 	 * and creates all components and bits recursively.
 	 */
-	protected function cookRecipe(array $recipe, ComponentManager $manager)
+	protected function cookRecipe(array $recipe, WebPage | WebComponent $owner)
 	{
 		//it is optional to add a root components item (only components can be defined at WebPage level)
 		$components = $recipe['components'] ?? $recipe;
 		
-		foreach ($components as $description => $componentRecipe) {
-			$manager->createComponent(
-				is_numeric($description) ? $componentRecipe : $description,
-				is_numeric($description) ? [] : $componentRecipe
-			);
+		try {
+			$this->mergeDefinitionsIntoConfig();
+			
+			foreach ($components as $description => $componentRecipe) {
+				$owner->createComponent(
+					is_numeric($description) ? $componentRecipe : $description,
+					is_numeric($description) ? null : $componentRecipe
+				);
+			}
+		} finally {
+			$this->resetOriginalConfig();
 		}
 	}
 	
@@ -103,15 +91,68 @@ class Recipe
 	 * A basic recipe trasher. Takes a recipe and deletes all components
 	 * and bits recursively. This only soft-deletes everything.
 	 */
-	protected function trashRecipe(array $recipe, ComponentManager $manager)
+	protected function trashRecipe(array $recipe, WebPage | WebComponent $owner)
 	{
 		//it is optional to add a root components item (only components can be defined at WebPage level)
 		$components = $recipe['components'] ?? $recipe;
+		$bits = $recipe['bits'] ?? [];
 		
 		foreach ($components as $description => $componentRecipe) {
 			$componentDescription = is_numeric($description) ? $componentRecipe : $description;
-			$uid = $manager->decomposeItemDescription($componentDescription)['uid'];
-			$manager->delete($uid);
+			$uid = decomposeWebItemDescription($componentDescription)['uid'];
+			$owner->remove($uid);
+		}
+		
+		foreach ($bits as $description => $bitRecipe) {
+			$bitDescription = is_numeric($description) ? $bitRecipe : $description;
+			$uid = decomposeWebItemDescription($bitDescription)['uid'];
+			$owner->remove($uid);
 		}
 	}
+	
+	public function defineComponents(): array
+	{
+		return [];
+	}
+	
+	public function defineBits(): array
+	{
+		return [];
+	}
+	
+	//--- Protected helpers -------------------------------------------------------------------------------------------
+	
+	protected function mergeDefinitionsIntoConfig()
+	{
+		config(['webComponents' => $this->componentDefinitions]);
+		config(['webBits' => $this->bitDefinitions]);
+	}
+	
+	protected function resetOriginalConfig()
+	{
+		config(['webComponents' => $this->webComponentsConfig]);
+		config(['webBits' => $this->webBitsConfig]);
+	}
+	
+	//protected function getComponentDefinition($type)
+	//{
+	//	if (!($this->componentDefinitions[$type] ?? null))
+	//		return null;
+	//
+	//	//string definitions are considered to be aliases, so a recursive call is made to resolve the alias
+	//	return is_string($this->componentDefinitions[$type])
+	//		? $this->getComponentDefinition($this->componentDefinitions['type'])
+	//		: $this->componentDefinitions['type'];
+	//}
+	//
+	//protected function getBitDefinition($type)
+	//{
+	//	if (!($this->bitDefinitions[$type] ?? null))
+	//		return null;
+	//
+	//	//string definitions are considered to be aliases, so a recursive call is made to resolve the alias
+	//	return is_string($this->bitDefinitions[$type])
+	//		? $this->getBitDefinition($this->bitDefinitions['type'])
+	//		: $this->bitDefinitions['type'];
+	//}
 }

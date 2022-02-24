@@ -1,26 +1,33 @@
 <?php
-namespace AntonioPrimera\WebPage\Managers\Traits;
+namespace AntonioPrimera\WebPage\Traits;
 
 use AntonioPrimera\WebPage\Models\Bit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 
 trait CleansUp
 {
+	use WebHelpers;
+	
 	/**
 	 * Deletes an item, either given as an instance, or as a string uid path
 	 *
 	 * By default, items are soft-deleted. Use $force = true
 	 * to force delete them from the DB.
 	 */
-	public function delete(WebComponent | Bit | string $item, bool $force = false)
+	public function remove(WebComponent | Bit | string | null $item, bool $force = false)
 	{
-		$itemInstance = is_string($item) ? $this->get($item) : $item;
+		$itemInstance = $item;
+		
+		if ($item === null)
+			$itemInstance = $this;
+		elseif (is_string($item))
+			$itemInstance = $this->get($item);
 		
 		if ($itemInstance instanceof Bit)
-			return $this->deleteBit($itemInstance, $force);
+			return $this->removeBit($itemInstance, $force);
 		
 		if ($itemInstance instanceof WebComponent)
-			return $this->deleteComponent($itemInstance, $force);
+			return $this->removeComponent($itemInstance, $force);
 		
 		return false;
 	}
@@ -31,14 +38,14 @@ trait CleansUp
 	 * By default, items are soft-deleted. Use $force = true
 	 * to force delete them from the DB.
 	 */
-	public function deleteComponent(WebComponent $component, bool $force = false)
+	public function removeComponent(WebComponent $component, bool $force = false)
 	{
-		foreach ($component->bits as $bit) {
-			$this->deleteBit($bit, $force);
+		foreach ($component->getBits(true) as $bit) {
+			$this->removeBit($bit, $force);
 		}
 		
-		foreach ($component->components as $childComponent) {
-			$this->deleteComponent($childComponent, $force);
+		foreach ($component->getComponents(true) as $childComponent) {
+			$this->removeComponent($childComponent, $force);
 		}
 		
 		return $force ? $component->forceDelete() : $component->delete();
@@ -50,7 +57,7 @@ trait CleansUp
 	 * By default, items are soft-deleted. Use $force = true
 	 * to force delete them from the DB.
 	 */
-	public function deleteBit(Bit $bit, bool $force = false)
+	public function removeBit(Bit $bit, bool $force = false)
 	{
 		return $force ? $bit->forceDelete() : $bit->delete();
 	}

@@ -15,13 +15,14 @@ class CreateBitsTable extends Migration
     {
         Schema::create('lwp_bits', function (Blueprint $table) {
             $table->id();
-            
+	
+			$table->foreignId('parent_id')->nullable()->constrained('lwp_components');
+			
+            $table->string('class_name');
 			$table->string('type');
             $table->string('name');
             $table->string('uid');
             $table->json('data')->nullable()->comment('The actual data container.');
-            
-            $table->foreignId('parent_id')->constrained('lwp_components');
             
             $table->softDeletes();
             

@@ -55,12 +55,7 @@ class SampleRecipe extends Recipe
 		];
 	}
 	
-	public function defineComponentAliases(): array
-	{
-		return [];
-	}
-	
-	public function defineBitAliases(): array
+	public function defineBits(): array
 	{
 		return [
 			'Titlu' => 'TextScurt',

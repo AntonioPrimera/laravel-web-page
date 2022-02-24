@@ -2,12 +2,14 @@
 
 namespace AntonioPrimera\WebPage\Models;
 
-use AntonioPrimera\WebPage\Definitions\BitDefinition;
+use AntonioPrimera\WebPage\Traits\CleansUp;
+use AntonioPrimera\WebPage\Traits\HasParent;
+use AntonioPrimera\WebPage\Traits\RetrievesComponents;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 
 /**
- * @property BitDefinition $definition
  * @property string        $type
  * @property string        $name
  * @property string        $uid
@@ -16,40 +18,12 @@ use Illuminate\Support\Arr;
  *
  * @property WebComponent  $component
  */
-class Bit extends WebItem
+class Bit extends WebItem implements Htmlable
 {
-	use SoftDeletes;
-	
-	const IS_LEAF = true;
+	use SoftDeletes, RetrievesComponents, HasParent, CleansUp;
 	
 	protected $guarded = [];
 	protected $table = 'lwp_bits';
-	
-	//definition buffer
-	protected array | null $definition = null;
-	
-	//--- Bit Definition ----------------------------------------------------------------------------------------------
-	
-	public function getDefinitionAttribute()
-	{
-		//check the buffer - this lazy loads the definition (buffered for the type)
-		if (!$this->definition)
-			$this->definition = bitDefinition($this->type);
-		
-		return $this->definition;
-	}
-	
-	//--- Getters and mutators ----------------------------------------------------------------------------------------
-	
-	public function getValueAttribute()
-	{
-		return $this->getBitData($this->language);
-	}
-	
-	public function setValueAttribute($value)
-	{
-		return $this->setBitData($this->language, $value);
-	}
 	
 	//--- Bit data management -----------------------------------------------------------------------------------------
 	
@@ -61,9 +35,33 @@ class Bit extends WebItem
 	
 	public function getBitData(?string $language, $default = null): mixed
 	{
-		//try the given language or the default language
-		return ($this->attributes['data'][strtolower($language ?: webPage()->getLanguage())] ?? null)
-			?: ($this->attributes['data'][webPage()->getFallbackLanguage()] ?? null)	//try the fallback language
-			?: $default;																//return the default value
+		return $this->getRawBitData(strtolower($language) ?: webPage()->getLanguage())
+			?: $this->getRawBitData(webPage()->getFallbackLanguage(), $default);
+	}
+	
+	//--- Abstract method implementations -----------------------------------------------------------------------------
+	
+	public function itemPath(): string
+	{
+		return $this->parent->itemPath() . ':' . $this->uid;
+	}
+	
+	public function getParent(): WebComponent|null
+	{
+		return $this->retrieveComponent($this->parent_id);
+	}
+	
+	//--- Protected helpers -------------------------------------------------------------------------------------------
+	
+	protected function getRawBitData(string $language, $default = null)
+	{
+		return $this->attributes['data'][$language] ?? $default;
+	}
+	
+	//--- Interface implementation ------------------------------------------------------------------------------------
+	
+	public function toHtml()
+	{
+		return $this->getBitData(webPage()->getLanguage(), '');
 	}
 }

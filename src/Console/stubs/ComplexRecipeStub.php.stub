@@ -53,21 +53,16 @@ class DUMMY_CLASS extends Recipe
 	public function defineComponents(): array
 	{
 		return [
-			//define your components: 'componentType' => ['components' => [...], 'bits' => [...]]
+			//define your components
+			//'componentType' => ['components' => [...], 'bits' => [...], 'model' => '...', 'admin' => '...']
 		];
 	}
 
-	public function defineComponentAliases(): array
+	public function defineBits(): array
 	{
 		return [
-			//define your component aliases: 'componentType' => 'aliasedComponentType'
-		];
-	}
-	
-	public function defineBitAliases(): array
-	{
-		return [
-			//define your bit aliases: 'bitType' => 'aliasedBitType'
+			//define your bits
+			//'bitType' => ['model' => '...', 'admin' => '...']
 		];
 	}
 	

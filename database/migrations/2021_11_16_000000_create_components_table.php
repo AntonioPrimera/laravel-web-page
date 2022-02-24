@@ -18,6 +18,8 @@ class CreateComponentsTable extends Migration
 	
 			$table->foreignId('parent_id')->nullable()->constrained('lwp_components');
 			
+			$table->string('class_name');
+			
 			$table->string('type');
             $table->string('name');
             $table->string('uid');
