@@ -7,18 +7,7 @@ use Livewire\Component;
 
 class WebComponentAdmin extends Component
 {
-	public WebComponent | null | string $component;
-	
-	public function mount()
-	{
-		//always normalize the given component into a component instance
-		$this->component = $this->getComponentInstance($this->component);
-	}
-	
-	public function render()
-	{
-		return view('web-page::livewire.web-component-admin');
-	}
+	public WebComponent | null | string $webComponent;
 	
 	//--- Protected helpers -------------------------------------------------------------------------------------------
 	

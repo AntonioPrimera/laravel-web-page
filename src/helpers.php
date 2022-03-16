@@ -23,3 +23,17 @@ function decomposeWebItemDescription(string $description): array
 	
 	return compact('type', 'name', 'uid');
 }
+
+function lineBrakesToParagraphs(?string $text, $force = false)
+{
+	if (!$text)
+		return '';
+	
+	$paragraphs = explode("\n", $text);
+	
+	//if we only have one paragraph, just return the contents
+	if (count($paragraphs) === 1 && !$force)
+		return $paragraphs[0];
+	
+	return implode(array_map(fn($paragraph) => "<p>$paragraph</p>", $paragraphs));
+}

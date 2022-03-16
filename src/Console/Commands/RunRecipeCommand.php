@@ -8,8 +8,8 @@ use Illuminate\Console\Command;
 
 class RunRecipeCommand extends Command
 {
-	protected $signature = "web-page:recipe {name : the base class name of the recipe, from folder app/WebPage/Recipes}
-											{--down : whether to tear down the recipe, by running its down() method}";
+	protected $signature = "web-page:recipe:run {name : the base class name of recipe, from folder app/WebPage/Recipes}
+												{--down : tear down the recipe, by running its down() method}";
 	
 	protected $description = "This method runs the public up() method of the given WebPage Recipe. All recipes should
 							  be found in folder app/WebPage/Recipes, with namespace App\\WebPage\\Recipes.

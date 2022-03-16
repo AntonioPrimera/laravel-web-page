@@ -2,12 +2,12 @@
 
 namespace AntonioPrimera\WebPage\Models;
 
+use AntonioPrimera\WebPage\Http\Livewire\BitAdmin\TextBitAdmin;
 use AntonioPrimera\WebPage\Traits\CleansUp;
+use AntonioPrimera\WebPage\Traits\HandlesBitData;
 use AntonioPrimera\WebPage\Traits\HasParent;
 use AntonioPrimera\WebPage\Traits\RetrievesComponents;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
 
 /**
  * @property string        $type
@@ -18,26 +18,15 @@ use Illuminate\Support\Arr;
  *
  * @property WebComponent  $component
  */
-class Bit extends WebItem implements Htmlable
+class WebBit extends WebItem implements Htmlable, \Stringable
 {
-	use SoftDeletes, RetrievesComponents, HasParent, CleansUp;
+	use RetrievesComponents, HasParent, CleansUp, HandlesBitData;
 	
 	protected $guarded = [];
 	protected $table = 'lwp_bits';
-	
-	//--- Bit data management -----------------------------------------------------------------------------------------
-	
-	public function setBitData(string $language, mixed $value): static
-	{
-		Arr::set($this->attributes['data'], strtolower($language), $value);
-		return $this;
-	}
-	
-	public function getBitData(?string $language, $default = null): mixed
-	{
-		return $this->getRawBitData(strtolower($language) ?: webPage()->getLanguage())
-			?: $this->getRawBitData(webPage()->getFallbackLanguage(), $default);
-	}
+	protected $casts = [
+		'data' => 'array'
+	];
 	
 	//--- Abstract method implementations -----------------------------------------------------------------------------
 	
@@ -51,11 +40,13 @@ class Bit extends WebItem implements Htmlable
 		return $this->retrieveComponent($this->parent_id);
 	}
 	
-	//--- Protected helpers -------------------------------------------------------------------------------------------
+	//--- Override WebItem methods ------------------------------------------------------------------------------------
 	
-	protected function getRawBitData(string $language, $default = null)
+	public function getAdminViewData(): array
 	{
-		return $this->attributes['data'][$language] ?? $default;
+		return [
+			'bit' => $this,
+		];
 	}
 	
 	//--- Interface implementation ------------------------------------------------------------------------------------
@@ -63,5 +54,10 @@ class Bit extends WebItem implements Htmlable
 	public function toHtml()
 	{
 		return $this->getBitData(webPage()->getLanguage(), '');
+	}
+	
+	public function getAdminViewComponent(): string
+	{
+		return TextBitAdmin::class;
 	}
 }

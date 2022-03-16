@@ -1,1 +1,0 @@
-This is a web-bit admin view

@@ -2,7 +2,7 @@
 
 namespace AntonioPrimera\WebPage\Traits;
 
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use AntonioPrimera\WebPage\WebPage;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 trait RetrievesBits
 {
 	
-	protected function retrieveOwnBit(string $uid): Bit | null
+	protected function retrieveOwnBit(string $uid): WebBit | null
 	{
 		$rawBit = $this->bitsTable()
 			->where('parent_id', $this instanceof WebComponent ? $this->id : null)

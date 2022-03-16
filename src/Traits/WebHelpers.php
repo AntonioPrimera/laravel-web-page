@@ -2,7 +2,7 @@
 
 namespace AntonioPrimera\WebPage\Traits;
 
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 
 trait WebHelpers
@@ -22,7 +22,7 @@ trait WebHelpers
 	 * e.g. $componentManager->get('homepage.header.image:url')
 	 * 		will get the url Bit instance from the image component
 	 */
-	public function get(string $path): WebComponent | Bit | null
+	public function get(string $path): WebComponent | WebBit | null
 	{
 		//split the path into a component path and an attribute path
 		$pathParts = explode(':', $path, 2);

@@ -24,7 +24,7 @@ class CreateComponentsTable extends Migration
             $table->string('name');
             $table->string('uid');
             
-			$table->softDeletes();
+			//$table->softDeletes();
             
             $table->timestamps();
         });

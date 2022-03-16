@@ -2,29 +2,18 @@
 
 namespace AntonioPrimera\WebPage\Http\Livewire;
 
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 use Livewire\Component;
 
 class WebBitAdmin extends Component
 {
-	public ?Bit $bitInstance;
-	
-	public function mount($bit)
-	{
-		$this->bitInstance = $this->getBitInstance($bit);
-	}
-	
-	public function render()
-	{
-		//todo: create a simple, default web bit admin (short text)
-		return view('web-page::livewire.web-bit-admin');
-	}
+	public ?WebBit $webBit;
 	
 	//--- Protected helpers -------------------------------------------------------------------------------------------
 	
-	protected function getBitInstance($bit)
+	protected function getWebBit($bit)
 	{
-		if ($bit instanceof Bit)
+		if ($bit instanceof WebBit)
 			return $bit;
 		
 		if (is_string($bit))

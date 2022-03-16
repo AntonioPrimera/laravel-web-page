@@ -2,7 +2,6 @@
 
 namespace AntonioPrimera\WebPage\Tests\Feature;
 
-use AntonioPrimera\WebPage\Facades\WebPage;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use AntonioPrimera\WebPage\Tests\TestCase;
 use AntonioPrimera\WebPage\Tests\Traits\ComponentAssertions;

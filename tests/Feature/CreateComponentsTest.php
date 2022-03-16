@@ -3,20 +3,17 @@ namespace AntonioPrimera\WebPage\Tests\Feature;
 
 use AntonioPrimera\Testing\CustomAssertions;
 use AntonioPrimera\WebPage\Facades\WebPage;
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use AntonioPrimera\WebPage\Tests\TestCase;
+use AntonioPrimera\WebPage\Tests\TestContext\SampleTestComponent;
 use AntonioPrimera\WebPage\Tests\Traits\ComponentAssertions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class CreateComponentsTest extends TestCase
 {
 	use RefreshDatabase, CustomAssertions, ComponentAssertions;
-	
-	//protected function setUp(): void
-	//{
-	//	parent::setUp();
-	//}
 	
 	/** @test */
 	public function it_can_create_a_simple_undefined_component_using_the_base_creation_method()
@@ -47,6 +44,53 @@ class CreateComponentsTest extends TestCase
 	}
 	
 	/** @test */
+	public function it_can_create_a_predefined_component_with_a_dedicated_model()
+	{
+		$componentCount = WebComponent::count();
+		config(['webComponents' => [
+			'Sample' => [
+				'model' => SampleTestComponent::class,
+			],
+			
+			'SampleAlias' => 'Sample',
+		]]);
+		
+		$sample = webPage()->createComponent('Sample');
+		$sampleAlias = $sample->createComponent('SampleAlias');
+		
+		$this->assertEquals($componentCount + 2, WebComponent::count());
+		$this->assertIsComponent($sample);
+		$this->assertIsComponent($sampleAlias);
+		$this->assertInstanceOf(SampleTestComponent::class, $sample);
+		$this->assertInstanceOf(SampleTestComponent::class, $sampleAlias);
+	}
+	
+	/** @test */
+	public function it_can_retrieve_a_component_with_the_correct_model_class()
+	{
+		$componentCount = WebComponent::count();
+		config(['webComponents' => [
+			'Sample' => [
+				'model' => SampleTestComponent::class,
+			],
+			
+			'SampleAlias' => 'Sample',
+		]]);
+		
+		webPage()->createComponent('Sample')
+			->createComponent('SampleAlias');
+		
+		$this->assertEquals($componentCount + 2, WebComponent::count());
+		webPage()->resetComponents();
+		
+		$sample = \webPage()->get('sample');
+		$sampleAlias = \webPage()->get('sample.sample-alias');
+		
+		$this->assertInstanceOf(SampleTestComponent::class, $sample);
+		$this->assertInstanceOf(SampleTestComponent::class, $sampleAlias);
+	}
+	
+	/** @test */
 	public function it_can_create_a_predefined_bit()
 	{
 		config(['webBits' => [
@@ -60,13 +104,13 @@ class CreateComponentsTest extends TestCase
 		$component = WebPage::createComponent('Type:Name');
 		
 		$componentCount = WebComponent::count();
-		$bitCount = Bit::count();
+		$bitCount = WebBit::count();
 		$bit = $component->createBit('Title:BigTitle:my-title');
 		
 		$this->assertIsBit($bit);
 		
 		$this->assertEquals($componentCount, WebComponent::count());
-		$this->assertEquals($bitCount + 1, Bit::count());
+		$this->assertEquals($bitCount + 1, WebBit::count());
 		
 		$this->assertBitDetails($bit, 'Title', 'BigTitle', 'my-title');
 		$this->assertIsComponent($bit->getParent());
@@ -95,26 +139,27 @@ class CreateComponentsTest extends TestCase
 		$header = webPage()->get('home.header');
 		$this->assertTrue($header->getBit('title')->is(webPage()->get('home.header:title')));
 		$title = webPage()->get('home.header:title');
-		/* @var Bit $title */
-		$title->setBitData('en', 'English');
-		$title->setBitData('de', 'Deutsch');
+		/* @var WebBit $title */
 		
-		$this->assertEquals('English', webPage()->get('home.header:title')->getBitData('en'));
-		$this->assertEquals('Deutsch', webPage()->get('home.header:title')->getBitData('de'));
+		$title->set('en', 'English');
+		$title->set('de', 'Deutsch');
+		
+		$this->assertEquals('English', webPage()->get('home.header:title')->get('en'));
+		$this->assertEquals('Deutsch', webPage()->get('home.header:title')->get('de'));
 		
 		WebPage::setLanguage('en');
-		$this->assertEquals('English', webPage()->get('home.header:title')->getBitData(null));
+		$this->assertEquals('English', webPage()->get('home.header:title')->get(null));
 		
 		//the default language
 		WebPage::setLanguage('de');
-		$this->assertEquals('Deutsch', webPage()->get('home.header:title')->getBitData(null));
+		$this->assertEquals('Deutsch', webPage()->get('home.header:title')->get(null));
 		
 		//fallback language
 		WebPage::setLanguage('it');
-		$this->assertEquals('English', webPage()->get('home.header:title')->getBitData(null));
+		$this->assertEquals('English', webPage()->get('home.header:title')->get(null));
 		
 		//fallback language
-		$this->assertEquals('English', webPage()->get('home.header:title')->getBitData('es'));
+		$this->assertEquals('English', webPage()->get('home.header:title')->get('es'));
 	}
 	
 	/** @test */

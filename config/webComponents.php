@@ -2,7 +2,7 @@
 
 return [
 	'Page' => [
-		'class' => 'App\\Models\\WebComponents\\Page',
+		//'model' => 'App\\Models\\WebComponents\\Page',
 	],
 	
 	'Section' => [],
@@ -25,5 +25,9 @@ return [
 		'bits' => [
 			'ShortText:Label'
 		],
+	],
+	
+	'Gallery' => [
+		'model' => '\\AntonioPrimera\\WebPage\\Models\\Components\\ImageGalleryComponent'
 	],
 ];

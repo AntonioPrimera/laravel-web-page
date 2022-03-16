@@ -6,16 +6,31 @@
 
 ## Architecture
 
-The web page uses Components and Bits to be able to store any configurable data. Components
-are used to group other components and bits. Bits are used to store texts, image urls or
+The web page uses WebComponents and WebBits to be able to store any configurable data. WebComponents
+are used to group other WebComponents and WebBits. WebBits are used to store texts, image urls or
 any other data which will be displayed.
 
-### Components
+WebComponents and WebBits are Eloquent Models, which are created using a recipe, like a database
+migration, once, during the setup of the application, right after setting up the database.
 
-Components are Eloquent Models, 
+### WebComponents
 
-### Bits
+WebComponents are Eloquent Models, which can be organized in a hierarchy, having as parent either the
+WebPage itself (which is the root of this hierarchy), or another WebComponent.
 
+WebComponents can have as children other WebComponents and / or WebBits.
+
+### WebBits
+
+WebBits are models, considered data nodes, contrary to WebComponents, which are providing the WebPage
+structure. WebComponents are branches and WebBits are leaves.
+
+WebBits can have relations to other models, like Media Items from Spatie Laravel Media Library.
+
+The main role of WebBits is to store data in one or many languages. These are specific to multi-lingual
+websites.
+
+WebBit data is stored as an array, so it can hold some data several levels deep.
 
 ### Creating a recipe (via Artisan)
 

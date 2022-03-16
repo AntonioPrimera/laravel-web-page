@@ -2,7 +2,7 @@
 
 namespace AntonioPrimera\WebPage\Tests\Traits;
 
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -12,16 +12,6 @@ trait ComponentAssertions
 	protected function assertComponentMissing($componentUid)
 	{
 		$this->assertDatabaseMissing($this->componentsTable, ['uid' => $componentUid, 'deleted_at' => null]);
-	}
-	
-	protected function assertComponentIsSoftDeleted($componentUid)
-	{
-		$this->assertNotNull(
-			DB::table($this->componentsTable)
-				->where('uid', $componentUid)
-				->whereNotNull('deleted_at')
-				->first()
-		);
 	}
 	
 	protected function assertComponentExists($componentUid)
@@ -38,7 +28,7 @@ trait ComponentAssertions
 	
 	protected function assertIsBit($bit)
 	{
-		$this->assertInstanceOf(Bit::class, $bit);
+		$this->assertInstanceOf(WebBit::class, $bit);
 		$this->assertInstanceOf($bit->class_name, $bit);
 		return $this;
 	}
@@ -91,7 +81,7 @@ trait ComponentAssertions
 		$this->assertEquals($uid, $component->uid);
 	}
 	
-	protected function assertBitDetails(Bit $bit, $type, $name, $uid)
+	protected function assertBitDetails(WebBit $bit, $type, $name, $uid)
 	{
 		$this->assertEquals($type, $bit->type);
 		$this->assertEquals($name, $bit->name);

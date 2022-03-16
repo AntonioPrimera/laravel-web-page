@@ -5,7 +5,7 @@ namespace DUMMY_NAMESPACE;
 use AntonioPrimera\WebPage\Recipes\Recipe;
 use AntonioPrimera\WebPage\Facades\WebPage;
 use AntonioPrimera\WebPage\Models\WebComponent;
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 
 class DUMMY_CLASS extends Recipe
 {

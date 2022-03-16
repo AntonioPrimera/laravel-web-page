@@ -2,14 +2,14 @@
 
 namespace AntonioPrimera\WebPage\Models;
 
+use AntonioPrimera\WebPage\Http\Livewire\ComponentAdmin\GenericComponentAdmin;
+use AntonioPrimera\WebPage\Http\Livewire\ComponentAdmin\SubComponentAdmin;
 use AntonioPrimera\WebPage\Traits\CleansUp;
 use AntonioPrimera\WebPage\Traits\HasBits;
 use AntonioPrimera\WebPage\Traits\HasComponents;
 use AntonioPrimera\WebPage\Traits\HasParent;
+use AntonioPrimera\WebPage\Traits\WebHelpers;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property int $id
@@ -22,12 +22,28 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class WebComponent extends WebItem implements HasMedia
+class WebComponent extends WebItem
 {
-	use SoftDeletes, InteractsWithMedia, HasComponents, HasParent, HasBits, CleansUp;
+	use HasComponents, HasParent, HasBits, CleansUp, WebHelpers;
 	
 	protected $guarded = [];
 	protected $table = 'lwp_components';
+	
+	//--- Override WebItem methods ------------------------------------------------------------------------------------
+	
+	public function getAdminViewComponent(): string
+	{
+		return $this->parent instanceof WebComponent
+			? SubComponentAdmin::class
+			: GenericComponentAdmin::class;
+	}
+	
+	public function getAdminViewData(): array
+	{
+		return [
+			'component' => $this,
+		];
+	}
 	
 	//--- Abstract method implementations -----------------------------------------------------------------------------
 	

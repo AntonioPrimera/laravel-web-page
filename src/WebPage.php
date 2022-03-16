@@ -29,20 +29,20 @@ class WebPage
 	
 	public function setLanguage(string $language): WebPage
 	{
-		$this->language = $language;
+		$this->language = strtolower($language);
 		return $this;
 	}
 	
 	public function setFallbackLanguage(string $language): WebPage
 	{
-		$this->fallbackLanguage = $language;
+		$this->fallbackLanguage = strtolower($language);
 		return $this;
 	}
 	
 	public function getLanguage(): string
 	{
 		if (!$this->language)
-			$this->language = config('app.locale');
+			$this->setLanguage(config('app.locale'));
 		
 		return $this->language;
 	}
@@ -50,8 +50,30 @@ class WebPage
 	public function getFallbackLanguage(): string
 	{
 		if (!$this->fallbackLanguage)
-			$this->fallbackLanguage = config('app.fallback_locale');
+			$this->setFallbackLanguage(config('app.fallback_locale'));
 		
 		return $this->fallbackLanguage;
+	}
+	
+	/**
+	 * Return the list of languages, from the config key 'app.languages'.
+	 * e.g.
+	 * 	[
+	 * 		'en' => [
+	 * 			'label' => 'English',
+	 * 			...
+	 * 		],
+	 * 		'es' => [
+	 * 			'label' => 'Espanol',
+	 * 			...
+	 * 		],
+	 * 	]
+	 */
+	public function getLanguages()
+	{
+		return config('app.languages', [
+			$this->language => [],
+			$this->fallbackLanguage => [],
+		]);
 	}
 }

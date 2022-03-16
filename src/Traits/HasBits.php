@@ -2,7 +2,7 @@
 
 namespace AntonioPrimera\WebPage\Traits;
 
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use Illuminate\Support\Collection;
 
@@ -14,7 +14,7 @@ trait HasBits
 	
 	//--- Bit creation ------------------------------------------------------------------------------------------------
 	
-	public function createBit(string $description): ?Bit
+	public function createBit(string $description, array | string | null $definition = null): ?WebBit
 	{
 		//decompose the item description
 		['type' => $type, 'name' => $name, 'uid' => $uid] = decomposeWebItemDescription($description);
@@ -24,8 +24,9 @@ trait HasBits
 			return $existingBit;
 		
 		//if only pre-defined bits should be created and this type is not defined, exit
-		$definition = $this->getBitDefinition($type);
-		return $this->cacheBit($this->createOwnBit($type, $name, $uid, $definition['class'] ?? null));
+		$def = $this->getBitDefinition($type, $definition);
+		//echo "\nDefinition: " . json_encode($definition) . "\n";
+		return $this->cacheBit($this->createOwnBit($type, $name, $uid, $def['model'] ?? null));
 		
 		//if ($onlyDefined && !BitDictionary::isDefined($type))
 		//	return null;
@@ -49,7 +50,7 @@ trait HasBits
 		return $this->bits;
 	}
 	
-	public function getBit(string $uid): ?Bit
+	public function getBit(string $uid): ?WebBit
 	{
 		if ($this->bits && $this->bits->has($uid))
 			return $this->bits->get($uid);
@@ -66,9 +67,9 @@ trait HasBits
 	
 	protected function createOwnBit(string $type, string $name, string $uid, ?string $class)
 	{
-		$bitClass = is_subclass_of($class, Bit::class)
+		$bitClass = is_subclass_of($class, WebBit::class)
 			? $class
-			: Bit::class;
+			: WebBit::class;
 		
 		//create a new bit of the given component class
 		$bit = $bitClass::create([
@@ -85,7 +86,7 @@ trait HasBits
 		return $bit;
 	}
 	
-	protected function cacheBit(?Bit $bit): Bit | null
+	protected function cacheBit(?WebBit $bit): WebBit | null
 	{
 		if (!$bit)
 			return null;
@@ -96,6 +97,12 @@ trait HasBits
 		$this->bits->put($bit->uid, $bit);
 		
 		return $bit;
+	}
+	
+	protected function clearCachedBit(WebBit|string $bit)
+	{
+		$bitUid = is_string($bit) ? $bit : $bit->uid;
+		unset($this->bits[$bitUid]);
 	}
 	
 	protected function retrieveBits(int | string | null $parentId): Collection
@@ -110,15 +117,19 @@ trait HasBits
 	
 	//--- Component definitions ---------------------------------------------------------------------------------------
 	
-	protected function getBitDefinition($type)
+	protected function getBitDefinition($type, array | string | null $definition = null)
 	{
-		$definition = config("webBits.$type");
-		if (!$definition)
+		//if a definition was given, just return it (a string definition, is considered to be the model class)
+		if ($definition)
+			return is_string($definition) ? ['model' => $definition] : $definition;
+		
+		$def = config("webBits.$type");
+		if (!$def)
 			return [];
 		
 		//string definitions are considered to be aliases, so a recursive call is made to resolve the alias
-		return is_string($definition)
-			? $this->getBitDefinition($definition)
-			: $definition;
+		return is_string($def)
+			? $this->getBitDefinition($def)
+			: $def;
 	}
 }

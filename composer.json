@@ -35,14 +35,12 @@
                 "AntonioPrimera\\WebPage\\WebPageServiceProvider"
             ],
             "aliases": {
-                "WebPage": "AntonioPrimera\\WebPage\\Facades\\WebPage",
-                "BitDictionary": "AntonioPrimera\\WebPage\\Facades\\BitDictionary",
-                "ComponentDictionary": "AntonioPrimera\\WebPage\\Facades\\ComponentDictionary"
+                "WebPage": "AntonioPrimera\\WebPage\\Facades\\WebPage"
             }
         }
     },
     "require": {
         "livewire/livewire": "^2.8",
-        "spatie/laravel-medialibrary": "^9.0.0"
+        "spatie/laravel-medialibrary": "^9"
     }
 }

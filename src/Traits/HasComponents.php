@@ -22,25 +22,34 @@ trait HasComponents
 	
 	/**
 	 * Create a component, given a description and optionally a definition.
-	 * The description has the following format:
-	 *    "<type>:<name>:<uid>"
+	 * The description must have the following format:
+	 *    	"<type>:<name>:<uid>"
+	 * 	OR
+	 * 		['type' => '...', 'name' => '...', 'uid' => '...']
 	 *
 	 * The name and the uid are optional. If omitted, the type is used to infer them.
 	 *
 	 * If $onlyDefined is true (by default true), then a component is created
 	 * only if the type defined in the webComponents config.
 	 */
-	public function createComponent(string $description, array | null $recipe = []): WebComponent
+	public function createComponent(string | array $description, array | null $recipe = []): WebComponent
 	{
 		//decompose the item description
-		['type' => $type, 'name' => $name, 'uid' => $uid] = decomposeWebItemDescription($description);
+		['type' => $type, 'name' => $name, 'uid' => $uid] = is_string($description)
+			? decomposeWebItemDescription($description)
+			: $description;
 		
 		//only create a new component if it doesn't already exist
 		if ($existingComponent = $this->getOwnComponent($uid))
 			return $existingComponent;
 		
 		$componentRecipe = $recipe ?: $this->getComponentDefinition($type);
-		$component = $this->createNewComponent($type, $name, $uid, $componentRecipe['class'] ?? null);
+		$component = $this->createNewComponent(
+			$type,
+			$name,
+			$uid,
+			$componentRecipe['model'] ?? WebComponent::class
+		);
 		
 		//if we have a component recipe (either given, or in the dictionary), also create its sub-components and bits
 		if ($componentRecipe)
@@ -88,8 +97,13 @@ trait HasComponents
 		}
 		
 		//create any defined child bits
-		foreach ($recipe['bits'] ?? [] as $description)
-			$this->createBit($description);
+		foreach ($recipe['bits'] ?? [] as $key => $value) {
+			$description = is_numeric($key) ? $value : $key;
+			$definition = is_numeric($key) ? null : $value;
+			
+			$this->createBit($description, $definition);
+		}
+		
 	}
 	
 	//--- Generic protected helpers -----------------------------------------------------------------------------------
@@ -97,7 +111,7 @@ trait HasComponents
 	/**
 	 * Create a new component based on the given data
 	 */
-	protected function createNewComponent(string $type, string $name, string $uid, ?string $class): WebComponent
+	protected function createNewComponent(string $type, string $name, string $uid, string $class): WebComponent
 	{
 		$componentClass = is_subclass_of($class, WebComponent::class)
 			? $class
@@ -170,6 +184,12 @@ trait HasComponents
 		$this->components->put($component->uid, $component);
 		
 		return $component;
+	}
+	
+	protected function clearCachedComponent(WebComponent|string $component)
+	{
+		$uid = is_string($component) ? $component : $component->uid;
+		unset($this->components[$uid]);
 	}
 	
 	//--- Component definitions ---------------------------------------------------------------------------------------

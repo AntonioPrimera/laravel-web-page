@@ -24,7 +24,7 @@ class CreateBitsTable extends Migration
             $table->string('uid');
             $table->json('data')->nullable()->comment('The actual data container.');
             
-            $table->softDeletes();
+            //$table->softDeletes();
             
             $table->timestamps();
         });

@@ -3,7 +3,6 @@
 namespace AntonioPrimera\WebPage\Tests;
 
 use AntonioPrimera\WebPage\WebPageServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\LivewireServiceProvider;
 use Spatie\MediaLibrary\MediaLibraryServiceProvider;

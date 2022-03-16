@@ -5,7 +5,7 @@ namespace AntonioPrimera\WebPage\Tests\Feature;
 use AntonioPrimera\Testing\CustomAssertions;
 use AntonioPrimera\WebPage\Facades\WebPage;
 use AntonioPrimera\WebPage\Recipes\Recipe;
-use AntonioPrimera\WebPage\Models\Bit;
+use AntonioPrimera\WebPage\Models\WebBit;
 use AntonioPrimera\WebPage\Models\WebComponent;
 use AntonioPrimera\WebPage\Tests\TestCase;
 use AntonioPrimera\WebPage\Tests\Traits\ComponentAssertions;
@@ -49,7 +49,7 @@ class RunRecipeCommandTest extends TestCase
 		
 		$this->assertComponentMissing('home-page');
 		
-		Artisan::call('web-page:recipe SampleRecipe');
+		Artisan::call('web-page:recipe:run SampleRecipe');
 		
 		//check root component creation
 		$this->assertComponentExists('home-page');
@@ -60,24 +60,28 @@ class RunRecipeCommandTest extends TestCase
 		//check CTA creation
 		$this->assertHasComponents(WebPage::getComponent('home-page.hai-la-noi'), ['actiune']);
 		$this->assertHasBits(WebPage::getComponent('home-page.hai-la-noi'), ['titlu', 'descriere']);
+		
+		$this->markTestIncomplete('Need to test setting a specific model class for components and bits from recipe');
 	}
 	
 	/** @test */
 	public function it_can_destroy_a_recipe_using_the_down_flag()
 	{
 		$initialComponentCount = WebComponent::count();
-		$initialBitCount = Bit::count();
+		$initialBitCount = WebBit::count();
 		
-		Artisan::call('web-page:recipe SampleRecipe');
+		Artisan::call('web-page:recipe:run SampleRecipe');
 		
 		$this->assertTrue(WebComponent::count() > $initialComponentCount);
-		$this->assertTrue(Bit::count() > $initialBitCount);
+		$this->assertTrue(WebBit::count() > $initialBitCount);
 		$this->assertComponentExists('home-page');
 		
-		Artisan::call('web-page:recipe SampleRecipe --down');
+		$homePageComponent = webPage()->get('home-page');
+		
+		Artisan::call('web-page:recipe:run SampleRecipe --down');
 		
 		$this->assertEquals($initialComponentCount, WebComponent::count());
-		$this->assertEquals($initialBitCount, Bit::count());
-		$this->assertComponentIsSoftDeleted('home-page');
+		$this->assertEquals($initialBitCount, WebBit::count());
+		$this->assertDeleted($homePageComponent);
 	}
 }
