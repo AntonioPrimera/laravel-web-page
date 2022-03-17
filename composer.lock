@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb8a7ebcc8feeac451d9e66c18153de9",
+    "content-hash": "9da9d4b0d6853777f14d5b0e2f659693",
     "packages": [
         {
             "name": "brick/math",
@@ -5457,7 +5457,7 @@
         },
         {
             "name": "antonioprimera/laravel-generator-command",
-            "version": "dev-master",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AntonioPrimera/laravel-generator-command.git",
@@ -5473,7 +5473,6 @@
                 "antonioprimera/lara-packager": "dev-master",
                 "orchestra/testbench": "^6.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -5506,7 +5505,7 @@
         },
         {
             "name": "antonioprimera/phpunit-custom-assertions",
-            "version": "dev-master",
+            "version": "v1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AntonioPrimera/phpunit-custom-assertions.git",
@@ -5524,7 +5523,6 @@
                 "illuminate/support": "^8.0",
                 "orchestra/testbench": "^6.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -8532,10 +8530,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "antonioprimera/laravel-generator-command": 20,
-        "antonioprimera/phpunit-custom-assertions": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
