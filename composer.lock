@@ -4,8 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9da9d4b0d6853777f14d5b0e2f659693",
+    "content-hash": "f19bf35982ad420d8f8c1e459f96d626",
     "packages": [
+        {
+            "name": "antonioprimera/laravel-generator-command",
+            "version": "v1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AntonioPrimera/laravel-generator-command.git",
+                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AntonioPrimera/laravel-generator-command/zipball/0bf443320c242c7d4ee904ffb40a0779b4676f99",
+                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99",
+                "shasum": ""
+            },
+            "require-dev": {
+                "antonioprimera/lara-packager": "dev-master",
+                "orchestra/testbench": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AntonioPrimera\\Artisan\\GenComServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AntonioPrimera\\Artisan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Primera",
+                    "email": "antonio@cus.ro"
+                }
+            ],
+            "description": "A base Artisan Command to easily create files from stubs",
+            "support": {
+                "issues": "https://github.com/AntonioPrimera/laravel-generator-command/issues",
+                "source": "https://github.com/AntonioPrimera/laravel-generator-command/tree/v1.2"
+            },
+            "time": "2021-12-17T14:43:12+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.9.3",
@@ -5454,54 +5502,6 @@
                 "source": "https://github.com/AntonioPrimera/lara-packager/tree/v1.5"
             },
             "time": "2021-10-29T09:36:28+00:00"
-        },
-        {
-            "name": "antonioprimera/laravel-generator-command",
-            "version": "v1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/AntonioPrimera/laravel-generator-command.git",
-                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/AntonioPrimera/laravel-generator-command/zipball/0bf443320c242c7d4ee904ffb40a0779b4676f99",
-                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99",
-                "shasum": ""
-            },
-            "require-dev": {
-                "antonioprimera/lara-packager": "dev-master",
-                "orchestra/testbench": "^6.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "AntonioPrimera\\Artisan\\GenComServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "AntonioPrimera\\Artisan\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Antonio Primera",
-                    "email": "antonio@cus.ro"
-                }
-            ],
-            "description": "A base Artisan Command to easily create files from stubs",
-            "support": {
-                "issues": "https://github.com/AntonioPrimera/laravel-generator-command/issues",
-                "source": "https://github.com/AntonioPrimera/laravel-generator-command/tree/v1.2"
-            },
-            "time": "2021-12-17T14:43:12+00:00"
         },
         {
             "name": "antonioprimera/phpunit-custom-assertions",
