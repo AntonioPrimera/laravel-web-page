@@ -13,7 +13,6 @@
     "require-dev": {
         "antonioprimera/lara-packager": "^1.5",
         "orchestra/testbench": "^7.1",
-        "antonioprimera/laravel-generator-command": "^1.2",
         "antonioprimera/phpunit-custom-assertions": "^1.0"
     },
     "autoload": {
@@ -41,6 +40,7 @@
     },
     "require": {
         "livewire/livewire": "^2.8",
+        "antonioprimera/laravel-generator-command": "^1.2",
         "spatie/laravel-medialibrary": "^10"
     }
 }

@@ -4,8 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0250eba74849425480078b07903b540a",
+    "content-hash": "55f1b89b72eeabc817124a905d21daa1",
     "packages": [
+        {
+            "name": "antonioprimera/laravel-generator-command",
+            "version": "v1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AntonioPrimera/laravel-generator-command.git",
+                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AntonioPrimera/laravel-generator-command/zipball/0bf443320c242c7d4ee904ffb40a0779b4676f99",
+                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99",
+                "shasum": ""
+            },
+            "require-dev": {
+                "antonioprimera/lara-packager": "dev-master",
+                "orchestra/testbench": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AntonioPrimera\\Artisan\\GenComServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AntonioPrimera\\Artisan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Primera",
+                    "email": "antonio@cus.ro"
+                }
+            ],
+            "description": "A base Artisan Command to easily create files from stubs",
+            "support": {
+                "issues": "https://github.com/AntonioPrimera/laravel-generator-command/issues",
+                "source": "https://github.com/AntonioPrimera/laravel-generator-command/tree/v1.2"
+            },
+            "time": "2021-12-17T14:43:12+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.9.3",
@@ -780,12 +828,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "3dd2a32d796957ac8593c4856640c2e2e8c6958b"
+                "reference": "d10ab79687c7f9d915e9e97c3533a1d413e6cda1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/3dd2a32d796957ac8593c4856640c2e2e8c6958b",
-                "reference": "3dd2a32d796957ac8593c4856640c2e2e8c6958b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d10ab79687c7f9d915e9e97c3533a1d413e6cda1",
+                "reference": "d10ab79687c7f9d915e9e97c3533a1d413e6cda1",
                 "shasum": ""
             },
             "require": {
@@ -952,7 +1000,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-03-16T14:43:25+00:00"
+            "time": "2022-03-16T16:44:42+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -2703,16 +2751,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "10.1.4",
+            "version": "10.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "97c08aad53db9f2bf1ee5b91dd55e0d47e8ced34"
+                "reference": "faf29b67e8c388da2154238c678e0ed63990376a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/97c08aad53db9f2bf1ee5b91dd55e0d47e8ced34",
-                "reference": "97c08aad53db9f2bf1ee5b91dd55e0d47e8ced34",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/faf29b67e8c388da2154238c678e0ed63990376a",
+                "reference": "faf29b67e8c388da2154238c678e0ed63990376a",
                 "shasum": ""
             },
             "require": {
@@ -2795,7 +2843,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.1.4"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.1.5"
             },
             "funding": [
                 {
@@ -2807,7 +2855,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-15T15:57:08+00:00"
+            "time": "2022-03-16T18:19:39+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -5279,54 +5327,6 @@
                 "source": "https://github.com/AntonioPrimera/lara-packager/tree/v1.5"
             },
             "time": "2021-10-29T09:36:28+00:00"
-        },
-        {
-            "name": "antonioprimera/laravel-generator-command",
-            "version": "v1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/AntonioPrimera/laravel-generator-command.git",
-                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/AntonioPrimera/laravel-generator-command/zipball/0bf443320c242c7d4ee904ffb40a0779b4676f99",
-                "reference": "0bf443320c242c7d4ee904ffb40a0779b4676f99",
-                "shasum": ""
-            },
-            "require-dev": {
-                "antonioprimera/lara-packager": "dev-master",
-                "orchestra/testbench": "^6.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "AntonioPrimera\\Artisan\\GenComServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "AntonioPrimera\\Artisan\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Antonio Primera",
-                    "email": "antonio@cus.ro"
-                }
-            ],
-            "description": "A base Artisan Command to easily create files from stubs",
-            "support": {
-                "issues": "https://github.com/AntonioPrimera/laravel-generator-command/issues",
-                "source": "https://github.com/AntonioPrimera/laravel-generator-command/tree/v1.2"
-            },
-            "time": "2021-12-17T14:43:12+00:00"
         },
         {
             "name": "antonioprimera/phpunit-custom-assertions",
