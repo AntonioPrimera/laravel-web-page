@@ -96,7 +96,7 @@ class ImageBitAdmin extends Component
 				return strtolower(str_replace(['#', '/', '\\', ' ', "'", '"'], '-', $fileName));
 			})
 			->usingName($file->getClientOriginalName())
-			->toMediaCollection($language);
+			->toMediaCollection($language, $this->bit->getMediaDisk());
 		
 		$this->bit->refresh();
 		$this->setupMediaSet();

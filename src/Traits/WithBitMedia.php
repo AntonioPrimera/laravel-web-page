@@ -111,6 +111,16 @@ trait WithBitMedia
 		return $properties;
 	}
 	
+	public function getMediaDisk()
+	{
+		$itemPath = $this->itemPath();
+		
+		return config("webPage.disks.$itemPath")
+			?: config("webPage.disks.$this->uid")
+			?: config('webPage.disks.default')
+			?: 'public';
+	}
+	
 	//public function getCustomSrcset(?Media $media)
 	//{
 	//	if (!$media)

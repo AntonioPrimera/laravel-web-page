@@ -73,4 +73,14 @@ class ImageGalleryComponent extends WebComponent implements HasMedia
 	{
 		return ImageGalleryComponentAdmin::class;
 	}
+	
+	public function getMediaDisk()
+	{
+		$itemPath = $this->itemPath();
+		
+		return config("webPage.disks.$itemPath")
+			?: config("webPage.disks.$this->uid")
+			?: config('webPage.disks.default')
+			?: 'public';
+	}
 }
