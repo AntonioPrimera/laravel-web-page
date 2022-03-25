@@ -32,7 +32,7 @@ class WebBit extends WebItem implements Htmlable, \Stringable
 	
 	public function itemPath(): string
 	{
-		return $this->parent->itemPath() . ':' . $this->uid;
+		return $this->getParent()->itemPath() . ':' . $this->uid;
 	}
 	
 	public function getParent(): WebComponent|null

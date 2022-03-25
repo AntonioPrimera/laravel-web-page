@@ -4,12 +4,12 @@ namespace AntonioPrimera\WebPage\Models\Bits;
 
 use AntonioPrimera\WebPage\Http\Livewire\BitAdmin\ImageBitAdmin;
 use AntonioPrimera\WebPage\Models\WebBit;
-use AntonioPrimera\WebPage\Traits\WithBitMedia;
+use AntonioPrimera\WebPage\Traits\BitMedia;
 use Spatie\MediaLibrary\HasMedia;
 
 class ImageBit extends WebBit implements HasMedia
 {
-	use WithBitMedia;
+	use BitMedia;
 	
 	public function toHtml()
 	{

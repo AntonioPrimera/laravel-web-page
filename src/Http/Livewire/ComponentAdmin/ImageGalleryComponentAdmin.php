@@ -17,7 +17,6 @@ class ImageGalleryComponentAdmin extends WebComponentAdmin
 	
 	public $gallery;
 	public $imageFiles = [];
-	//public $galleryImages;
 	
 	public function mount($component)
 	{
@@ -59,15 +58,17 @@ class ImageGalleryComponentAdmin extends WebComponentAdmin
 			'imageFiles.*' => 'image',
 		]);
 		
+		$gallery = $this->webComponent;
+		/* @var ImageGalleryComponent $gallery */
+		
 		foreach ($this->imageFiles as $temporaryImage) {
-			$this->webComponent
-				->addMedia($temporaryImage->getRealPath())
+			$gallery->addMedia($temporaryImage->getRealPath())
 				->sanitizingFileName(function($fileName) {
 					return strtolower(str_replace(['#', '/', '\\', ' ', "'", '"'], '-', $fileName));
 				})
 				//->withResponsiveImages()
 				//->usingName($temporaryImage->getClientOriginalName())
-				->toMediaCollection();	//name, disk
+				->toMediaCollection('default', $gallery->getMediaDisk());
 		}
 		
 		$this->imageFiles = [];

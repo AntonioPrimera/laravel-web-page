@@ -33,7 +33,7 @@ class WebComponent extends WebItem
 	
 	public function getAdminViewComponent(): string
 	{
-		return $this->parent instanceof WebComponent
+		return $this->getParent() instanceof WebComponent
 			? SubComponentAdmin::class
 			: GenericComponentAdmin::class;
 	}
@@ -49,8 +49,8 @@ class WebComponent extends WebItem
 	
 	public function itemPath(): string
 	{
-		return $this->parent instanceof WebItem
-			? $this->parent->itemPath() . '.' . $this->uid
+		return $this->getParent() instanceof WebItem
+			? $this->getParent()->itemPath() . '.' . $this->uid
 			: $this->uid;
 	}
 }

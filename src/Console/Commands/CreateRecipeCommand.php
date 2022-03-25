@@ -7,9 +7,9 @@ use AntonioPrimera\Artisan\FileRecipe;
 
 class CreateRecipeCommand extends FileGeneratorCommand
 {
-	protected $signature = "web-page:make:recipe {name : the class name of the recipe to be created}
-												 {--dry-run : do a dry run, do not create any files}
-												 {--complex : create a complex recipe}";
+	protected $signature = "web-page:recipe:create {name : the class name of the recipe to be created}
+												   {--dry-run : do a dry run, do not create any files}
+												   {--complex : create a complex recipe}";
 	
 	protected function recipe(): array
 	{

@@ -1,5 +1,17 @@
 <?php
 
 return [
-	//at the moment this file is not merged into the app config in the WebPageServiceProvider
+	//'disks' => [
+	//	'uid' => 'disk-name',
+	//],
+	
+	//'mediaConversions' => [
+	//	...
+	//],
+	
+	//\AntonioPrimera\WebPage\Models\Components\ImageGalleryComponent::class => [
+	//	'mediaConversions' => [
+	//		...
+	//	],
+	//],
 ];
