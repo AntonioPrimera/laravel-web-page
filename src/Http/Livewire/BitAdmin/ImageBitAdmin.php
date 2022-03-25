@@ -3,7 +3,6 @@
 namespace AntonioPrimera\WebPage\Http\Livewire\BitAdmin;
 
 use AntonioPrimera\WebPage\Models\Bits\ImageBit;
-use AntonioPrimera\WebPage\Models\WebBit;
 use Livewire\Component;
 use Livewire\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
@@ -131,9 +130,4 @@ class ImageBitAdmin extends Component
 				$this->media[$language]['properties'] = $fallbackProperties;
 		}
 	}
-	
-	//protected function getMediaInstance($language): Media | null
-	//{
-	//	return $this->bit->getFirstMedia($language);
-	//}
 }

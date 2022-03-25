@@ -25,6 +25,9 @@ trait HasParent
 		if ($this->parent_id === null)
 			return webPage();
 		
-		return $this->retrieveComponent($this->parent_id);
+		if (!$this->parent)
+			$this->parent = $this->retrieveComponent($this->parent_id);
+		
+		return $this->parent;
 	}
 }

@@ -17,7 +17,6 @@ class ImageGalleryComponentAdmin extends WebComponentAdmin
 	
 	public $gallery;
 	public $imageFiles = [];
-	//public $galleryImages;
 	
 	public function mount($component)
 	{

@@ -23,7 +23,8 @@ class WebPageServiceProvider extends ServiceProvider
 		
 		$this->mergeConfigFrom(__DIR__ . '/../config/webComponents.php', 'webComponents');
 		$this->mergeConfigFrom(__DIR__ . '/../config/webBits.php', 'webBits');
-		$this->mergeConfigFrom(__DIR__ . '/../config/webCollections.php', 'webCollections');
+		//$this->mergeConfigFrom(__DIR__ . '/../config/webCollections.php', 'webCollections');
+		$this->mergeConfigFrom(__DIR__ . '/../config/webPage.php', 'webPage');
 		
 		$this->app->bind(ComponentAdminPageCollector::class);
 		$this->app->tag(ComponentAdminPageCollector::class, 'admin-pages');
