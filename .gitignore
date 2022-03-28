@@ -7,3 +7,5 @@ yarn-error.log
 /.vscode
 composer.json.bak
 /vendor/
+
+composer.json.bak
