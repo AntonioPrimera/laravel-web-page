@@ -15,19 +15,11 @@ trait WebItemMedia
 	 * The list of custom media properties, each media item can have.
 	 * Override this with your own custom properties.
 	 */
-	protected array $mediaProperties = ['alt', 'label'];
+	protected array $mediaProperties = ['label'];
 	
 	public function getCustomProperties(?Media $media): array
 	{
-		$itemPath = $this->itemPath();
-		
-		$mediaProperties = config("webPage.mediaProperties.$itemPath")		//priority 1: full item path
-			?: config("webPage.mediaProperties.$this->uid")				//priority 2: uid
-			?: config('webPage.' . static::class . '.mediaProperties')		//priority 3: class specific config
-			?: config('webPage.mediaProperties.default')					//priority 4: configured default set
-			?: $this->mediaProperties;
-			
-		return Collection::wrap($mediaProperties)
+		return Collection::wrap($this->getCustomPropertyList())
 			->mapWithKeys(function($propertyName) use ($media) {
 				return [$propertyName => $media ? $media->getCustomProperty($propertyName) : null];
 			})
@@ -128,5 +120,30 @@ trait WebItemMedia
 			//	'width' => 1280,
 			//],
 		];
+	}
+	
+	protected function getCustomPropertyList(): array
+	{
+		$configKeys = [
+			'webPage.mediaProperties.' . $this->itemPath(),		//priority 1: full item path
+			'webPage.mediaProperties.' . $this->uid,			//priority 2: uid
+			'webPage.' . static::class . '.mediaProperties',	//priority 3: class specific config
+			'webPage.mediaProperties.default',					//priority 4: configured default set
+		];
+		
+		foreach ($configKeys as $configKey) {
+			$list = config($configKey);
+			
+			if (is_array($list))
+				return $list;
+		}
+		
+		return $this->mediaProperties;							//priority 5: local attribute
+		
+		//$mediaProperties = config("webPage.mediaProperties.$itemPath")		//priority 1: full item path
+		//	?: config("webPage.mediaProperties.$this->uid")				//priority 2: uid
+		//		?: config('webPage.' . static::class . '.mediaProperties')		//priority 3: class specific config
+		//			?: config('webPage.mediaProperties.default')					//priority 4: configured default set
+		//				?: $this->mediaProperties;
 	}
 }

@@ -483,3 +483,47 @@ return [
 ]; 
 ```
 
+### Media Custom Properties
+
+The custom properties are a set of metadata assigned to each media item. For example, you might want to
+let the user maintain an 'alt' attribute or a label for each uploaded image.
+
+You can define the list of custom properties for each media set, as an array of custom property names,
+(for example `['alt', 'label']`), in the following places, sorted by priority - first ones are those with
+higher priority:
+
+#### Config: webPage.mediaProperties.{itemPath}
+
+For example, if you have a Gallery component addressable with `'home-page.gallery'`, you would maintain
+the list of custom properties, so that it's accessible via
+`config('webPage.mediaProperties.home-page.gallery')`.
+
+This is the most specific configuration and allows you to define different custom properties sets for each
+individual WebItem handling media items.
+
+#### Config: webPage.mediaProperties.{uid}
+
+For example, if you have a Gallery component with uid `'gallery'`, you would maintain the list of custom
+properties, so that it's accessible via `config('webPage.mediaProperties.gallery')`.
+
+This would address all WebItems with uid '`gallery`'. This approach might be sufficient for most projects.
+
+#### Config: webPage.{className}.mediaProperties
+
+This is a good approach if you already have another class specific configuration (like media conversions).
+You would then just add the `'mediaProperties'` attribute and define your custom properties there. This
+configuration would apply to all WebItems with this class.
+
+#### Config: webPage.mediaProperties.default
+
+If you want to define a default set of media properties for all your media items, you can configure it,
+so that it's accessible via `config('webPage.mediaProperties.default')`.
+
+Of course, you can have a default set and use other, more specific config methods to override this default,
+for specific WebItems.
+
+#### Instance attribute: $mediaProperties
+
+Each WebItem class handling media has a $mediaProperties attribute, defining a sensible default list of
+custom media properties. At the moment, this default is `['label']`, which can be used as a media label
+and also as the value of the `alt` html attribute.
